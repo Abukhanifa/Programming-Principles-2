@@ -1,0 +1,5 @@
+def my_function(F=int(input())):
+    C=(5/9)*(F-32)
+    print(C)
+
+my_function()
