@@ -3,3 +3,4 @@ def my_function(grams=int(input())):
     print(ounces)
     
 my_function()
+  
