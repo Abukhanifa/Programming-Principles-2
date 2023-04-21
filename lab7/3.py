@@ -19,10 +19,22 @@ while done:
                 x+=20
             if x>25 and event.key == pygame.K_LEFT:
                 x-=20
+            
+            
+                 
                 
         screen.fill((0,0,0))
         color = (255, 0, 0)
         pygame.draw.circle(screen, color, (x,y), 25)
+        
+        for color in pygame.draw.circle(screen, color, (x,y), 25):
+            if x<0:
+                pygame.color.Color((0,255,0))
+            if y<0:
+                pygame.color.color((0,255,0))
+            
+        
+        
         
         pygame.display.flip()
         clock.tick(60)
