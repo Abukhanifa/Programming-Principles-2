@@ -2,20 +2,18 @@ import pygame
 import time
 import random
 import psycopg2
-from config import config
 
 name = input()
-
 config = psycopg2.connect(
     host='localhost',
-    database='postgres',
+    database='suppliers',
     password='qwerty123)',
     user='postgres'
 )
 current = config.cursor()
 
 sql = '''
-    SELECT * FROM snake WHERE username = %s; 
+    SELECT * FROM snakesql WHERE username = %s; 
 '''
 current.execute(sql, [name])
 config.commit()
@@ -23,13 +21,13 @@ data = current.fetchone()
 
 if data == None:  # создаем начальные данные если игрока нет в базе данных
     sql = '''
-        INSERT INTO snake VALUES(%s, 0, 0);
+        INSERT INTO snakesql VALUES(%s, 0, 0);
     '''
     current.execute(sql, [name])
     config.commit()
 else:  # если он уже есть в базе данных, высвечиваем в консоль его последний уровень
     sql = '''
-    SELECT score FROM "snake" WHERE username = %s;
+    SELECT score FROM snakesql WHERE username = %s;
     '''
     current.execute(sql, [name])
     final = current.fetchone()
@@ -37,6 +35,7 @@ else:  # если он уже есть в базе данных, высвечи�
     config.commit()
 
 paused = False
+
 
 snake_speed = 15
 pygame.init()
@@ -58,7 +57,7 @@ pygame.init()
 pygame.display.set_caption('Snakes')
 screen = pygame.display.set_mode((width, height))
 
-fps = pygame.time.Clock()
+fps = 60
 
 snake_position = [100, 50]
 
@@ -126,6 +125,8 @@ while True:
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                paused = True
             if event.key == pygame.K_UP:
                 change_to = 'UP'
             if event.key == pygame.K_DOWN:
@@ -220,9 +221,8 @@ while True:
     if snake_position[1] < 0 or snake_position[1] > height - 10:
         game_over()
         
-         # запускаем цикл паузы
     while paused:
-        pygame.time.Clock().tick(fps)
+        pygame.time.Clock().tick()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 paused = False
@@ -232,7 +232,7 @@ while True:
                 if event.key == pygame.K_s:
                     # обновляем текущие данные в базе данных
                     sql = '''
-                        UPDATE "snake" SET score = %s, level = %s WHERE username = %s;
+                        UPDATE snakesql SET score = %s, level = %s WHERE username = %s;
                     '''
                     current.execute(sql, [score, level, name])
                     config.commit()
@@ -247,12 +247,13 @@ while True:
 
     pygame.display.update()
 
-    fps.tick(snake_speed)
+    pygame.time.Clock().tick(snake_speed)
     
-    sql = '''
-    UPDATE snake SET score = %s, level = %s WHERE username = %s;
+
+sql = '''
+    UPDATE ss SET score = %s, level = %s WHERE username = %s;
 '''
-    current.execute(sql, [score, level, name])
-    config.commit()
-    current.close()
-    config.close()
+current.execute(sql, [score, level, name])
+config.commit()
+current.close()
+config.close()
