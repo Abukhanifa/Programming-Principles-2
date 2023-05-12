@@ -29,5 +29,5 @@ def delete_username(id):
     return rows_deleted
 
 if __name__ == '__main__':
-    deleted_rows = delete_username(8)
+    deleted_rows = delete_username(4)
     print('The number of deleted rows: ', deleted_rows)
