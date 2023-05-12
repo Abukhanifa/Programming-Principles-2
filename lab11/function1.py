@@ -29,5 +29,6 @@ def get_parts(username):
             conn.close()
 
 name = str(input())
-if __name__ == '__main__':
-        get_parts(name)
+if __name__ == '__main__':    
+  l = get_parts(name).lower()
+  print(l)

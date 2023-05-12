@@ -28,4 +28,4 @@ def delete_part(id):
             conn.close()
 
 if __name__ == '__main__':
-    delete_part(9)
+    delete_part(6)

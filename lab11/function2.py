@@ -3,7 +3,7 @@ from config1 import config
 
 
 def get_parts(lim, off):
-    """ get parts provided by a vendor specified by the vendor_id """
+    """ offset and limit """
     conn = None
     try:
         # read database configuration
@@ -12,8 +12,7 @@ def get_parts(lim, off):
         conn = psycopg2.connect(**params)
         # create a cursor object for execution
         cur = conn.cursor()
-        # another way to call a function
-        # cur.execute("SELECT * FROM get_parts_by_vendor( %s); ",(vendor_id,))
+        
         cur.callproc('get_data_offset_limit', (lim,off))
         # process the result set
         row = cur.fetchone()
@@ -28,8 +27,10 @@ def get_parts(lim, off):
         if conn is not None:
             conn.close()
 
+lim = int(input())
+off = int(input())
 
 if __name__ == '__main__':
-        get_parts(5,3)
+        get_parts(lim,off)
 
  
